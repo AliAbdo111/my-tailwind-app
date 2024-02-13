@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 
 
 const HotelDetailes = () => {
+
     const {
         register,
         handleSubmit,
@@ -14,16 +15,15 @@ const HotelDetailes = () => {
         watch,
         formState: { errors },
     } = useForm()
-
     const [loading, setLoading] = useState(true)
+    const [notFound, setNotFound] = useState(false)
     const [comments, setComments] = useState([])
     const [product, setProduct] = useState([]);
-    const [imgFirst,setImageFirst]=useState([])
+    const [imgFirst,setImageFirst]=useState([]);
     const {id} = useParams();
     const [_id, secondPart] = id.split(':');
 
     const fetchData = async () => {
-
         axios.get('http://localhost:3001/product/'+_id)
             .then(res => {
                 setTimeout(() => {
@@ -35,10 +35,10 @@ const HotelDetailes = () => {
             })
             .catch(error => {
                 setLoading(false);
+                setNotFound(true)
             });
     }
     const fetchComment = async () => {
-     
         axios.get('http://localhost:3001/comment/')
             .then(res => {
                 console.log(res)
@@ -47,19 +47,17 @@ const HotelDetailes = () => {
             .catch(error => {
                 console.error(error);
                 setLoading(false);
+                setNotFound(true)
             });
     }
     const sendComment = async (data) => {
         setLoading(true)
         axios.post('http://localhost:3001/comment/',data)
-            .then(res => {
-                console.log(res)
-               
+            .then(res => {    
                 fetchComment()
                 reset()
             })
-            .catch(error => {
-                console.error(error);
+            .catch(error => {     
                 setLoading(false);
             });
     }
@@ -68,6 +66,7 @@ const HotelDetailes = () => {
         fetchData()
         fetchComment()
     }, [])
+    
     return (
         <div className="p-4 bg-gray-100 ml-10 flex flex-col justify-center">
        {loading ?   
