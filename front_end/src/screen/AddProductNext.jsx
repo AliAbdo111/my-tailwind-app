@@ -7,20 +7,27 @@ import {
 import { FiCamera } from "react-icons/fi";
 import axios from 'axios';
 import { IoIosArrowForward } from "react-icons/io";
+import { IoIosCloseCircle } from "react-icons/io";
 
 
 const AddProductNext = () => {
     const navigate = useNavigate();
     const { state } = useLocation()
     const [image, setIamge] = useState([])
+    const [imageDispaly, setImageDispaly] = useState([])
     const [loading, setLoading] = useState(false);
     const [erroImage, setErrorImage] = useState(false)
 
     // hundelr
     const handleFileInput = (e) => {
         e.preventDefault()
+        const newImagePreviews = Array.from(e.target.files).map((file) => URL.createObjectURL(file));
+        setImageDispaly((prevImageDisplay) => [...prevImageDisplay, ...newImagePreviews]);
+
+        // setImageDispaly(URL.createObjectURL(e.target.files[0]))
         const formData = new FormData()
         Array.from(e.target.files).forEach(element => {
+   
             formData.append('image-file', element, element.name);
         });
         setIamge(formData);
@@ -32,7 +39,6 @@ const AddProductNext = () => {
     }
     const hundelNavigation = (e) => {
         e.preventDefault();
-   
         setLoading(true);
 
         const formData = image
@@ -69,11 +75,14 @@ const AddProductNext = () => {
                     {/* {erroImage&& <aspan className='text-red-500'>Please select exactly 4 images.</span>} */}
 
                     <div className="flex justify-evenly space-x-2 mt-4" >
-                        <img src="https://loremflickr.com/800/600/girl" className="shadow r border border-white h-[80px] w-[80px] rounded-2xl overflow-hidden border" />
-                        <img src="https://loremflickr.com/800/600/girl" className="shadow r border border-white h-[80px] w-[80px] rounded-2xl overflow-hidden border" />
-                        <img src="https://loremflickr.com/800/600/girl" className="shadow r border border-white h-[80px] w-[80px] rounded-2xl overflow-hidden border" />
-                        <img src="https://loremflickr.com/800/600/girl" className="shadow r border border-white h-[80px] w-[80px] rounded-2xl overflow-hidden border" />
-                    </div>
+                     {imageDispaly && 
+                     imageDispaly.map((srcImage,index)=>(
+                        <div> 
+                        <img key={index} src={srcImage} alt='test' className="shadow  border-white h-[80px] w-[80px] rounded-2xl overflow-hidden border" />
+                        </div>
+                     ))}
+                   
+                        </div> 
                     <div className='space-y-2 space-x-2'>
                         <button onClick={hundelNavigationBack} className='bg-gray-300 p-1 w-20 rounded-md'>Back</button>
                         <button

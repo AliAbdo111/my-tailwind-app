@@ -99,11 +99,11 @@ const Home = () => {
                 (
                     filteredProducts.length > 0 ?(<div className='flex flex-wrap justify-evenly bg-gray-100'>
 
-            {filteredProducts?.map((item)=>(
-  <div className="p-2 max-w-[27rem]  border-indigo-300 rounded-2xl hover:shadow-xl hover:shadow-indigo-50 flex flex-col "
-  >
+            {filteredProducts?.map((item,index)=>(
+        <div key={index} className="p-2 max-w-[27rem]  border-indigo-300 rounded-2xl hover:shadow-xl hover:shadow-indigo-50 flex flex-col "
+        >
     <Link to={`/${item._id}`}>
-      <img src={item.imgUrl[0]} className="shadow rounded-xl overflow-hidden border" />
+      <img src={item.imgUrl[0]}  alt="product img" className="w-[333px] h-[268px] shadow rounded-xl overflow-hidden border" />
       <div className="mt-2">
           <h4 className="font-bold text-xl">2972 {item.name}  </h4>
 
